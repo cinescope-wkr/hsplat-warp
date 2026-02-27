@@ -21,6 +21,12 @@ git submodule update --init --recursive
 
 ### 2) Environment
 Use Python 3.10+ and install dependencies required by `hsplat`:
+```bash
+pip install -r requirements.txt
+```
+
+Pinned versions in `requirements.txt` reflect a known working environment.
+
 - `torch` (CUDA build recommended for GPU execution)
 - `numpy`, `matplotlib`, `imageio`, `tyro`, `rich`
 - `pytorch3d`
