@@ -102,4 +102,4 @@ If you find our work useful in your research, please cite:
 
 ## Contact
 
-If you have any questions, please feel free to email [Suyeon Choi](https://choisuyeon.github.io/), [Brian Chao](https://bchao1.github.io/), or Jinwoo Lee (cinescope@kaist.ac.kr).
+If you have any questions, please feel free to email [Suyeon Choi](https://choisuyeon.github.io/) and [Brian Chao](https://bchao1.github.io/).
