@@ -4,11 +4,16 @@ An open-source library for computer-generated holography using primitives.
 
 ## Fork Notice
 This repository is a fork of the original `hsplat` project.
+
 Fork maintainer: Jinwoo Lee (cinescope@kaist.ac.kr)
 
 Changes in this fork:
-- `pycolmap` compatibility updates (`Reconstruction`-based parser path).
-- `gsplat.spherical_harmonics` mask-shape fix for 2DGS radii (`[C, N, 2] -> [C, N]`).
+- `pycolmap` parser compatibility update for recent API versions
+  (`SceneManager` import path replaced with `Reconstruction`-based loading).
+- `gsplat.spherical_harmonics` mask-shape compatibility fix in 2DGS loading
+  (radii from `[C, N, 2]` collapsed to boolean visibility mask `[C, N]`).
+- `Getting Started` updates for this fork
+  (`requirements.txt` workflow and recommended version combination).
 
 ## Associated paper
 #### Gaussian wave splatting for computer-generated holography | SIGGRAPH 2025
@@ -34,7 +39,7 @@ pip install -r requirements.txt
 ```
 
 Recommended version combination:
-- `Python 3.10.x`
+- `Python 3.10`
 - `torch 2.9.1` (CUDA 12.8 build)
 - `pytorch3d 0.7.9`
 - `gsplat 1.5.3`
