@@ -25,6 +25,12 @@ Use Python 3.10+ and install dependencies required by `hsplat`:
 pip install -r requirements.txt
 ```
 
+Recommended version combination:
+- `Python 3.10.x`
+- `torch 2.9.1` (CUDA 12.8 build)
+- `pytorch3d 0.7.9`
+- `gsplat 1.5.3`
+
 Pinned versions in `requirements.txt` reflect a known working environment.
 
 - `torch` (CUDA build recommended for GPU execution)
@@ -34,18 +40,7 @@ Pinned versions in `requirements.txt` reflect a known working environment.
 - `pycolmap` (for COLMAP parser)
 - `gsplat` (for 2DGS loading and rendering)
 
-### 3) GPU sanity check (recommended)
-```bash
-nvidia-smi
-python3 - <<'PY'
-import torch
-print("cuda_available:", torch.cuda.is_available())
-print("device_count:", torch.cuda.device_count())
-PY
-```
-If `cuda_available` is `False`, fix the host driver/NVML environment first.
-
-### 4) Data and checkpoints
+### 3) Data and checkpoints
 Download [Mip-NeRF 360](http://storage.googleapis.com/gresearch/refraw360/360_v2.zip) and
 [NeRF synthetic](https://drive.google.com/drive/folders/1cK3UDIJqKAAm7zyrxRYVFJ0BRMgrwhh4), then place datasets in `hsplat/data`.
 
@@ -53,7 +48,7 @@ Place pretrained Gaussian checkpoints in `hsplat/models` (example path:
 `hsplat/models/blender_default/lego/10000/ckpts/ckpt_29999.pt`).
 Pre-optimized checkpoints are available [here](https://drive.google.com/drive/folders/1zLCgHprvcwg1pDRiqiARcrXwHu4tWhAW?usp=drive_link).
 
-### 5) Quick run
+### 4) Quick run
 Run from `hsplat/hsplat`:
 ```bash
 cd hsplat
