@@ -12,15 +12,47 @@ An open-source library for computer-generated holography using primitives.
 *denotes equal contribution
 
 ## Getting Started
-Install PyTorch first, and then load the submodules in the `gsplat` folder with:
-```
-git submodule init
-git submodule update
+### 1) Clone and submodules
+```bash
+git clone https://github.com/cinescope-wkr/hsplat.git
+cd hsplat
+git submodule update --init --recursive
 ```
 
-Download [Mip-NeRF 360](http://storage.googleapis.com/gresearch/refraw360/360_v2.zip) and [NeRF synthetic](https://drive.google.com/drive/folders/1cK3UDIJqKAAm7zyrxRYVFJ0BRMgrwhh4) dataset in ```hsplat/data``` folder.
+### 2) Environment
+Use Python 3.10+ and install dependencies required by `hsplat`:
+- `torch` (CUDA build recommended for GPU execution)
+- `numpy`, `matplotlib`, `imageio`, `tyro`, `rich`
+- `pytorch3d`
+- `trimesh` (for mesh/point sampling paths)
+- `pycolmap` (for COLMAP parser)
+- `gsplat` (for 2DGS loading and rendering)
 
-Using `gsplat`, you can generate new scenes and store Gaussians in the ```hsplat/models``` folder, but we also provide pre-optimized Gaussians so that you can run the code out of the box. Download them from [here](https://drive.google.com/drive/folders/1zLCgHprvcwg1pDRiqiARcrXwHu4tWhAW?usp=drive_link) and place them in the ```hsplat/models``` folder.
+### 3) GPU sanity check (recommended)
+```bash
+nvidia-smi
+python3 - <<'PY'
+import torch
+print("cuda_available:", torch.cuda.is_available())
+print("device_count:", torch.cuda.device_count())
+PY
+```
+If `cuda_available` is `False`, fix the host driver/NVML environment first.
+
+### 4) Data and checkpoints
+Download [Mip-NeRF 360](http://storage.googleapis.com/gresearch/refraw360/360_v2.zip) and
+[NeRF synthetic](https://drive.google.com/drive/folders/1cK3UDIJqKAAm7zyrxRYVFJ0BRMgrwhh4), then place datasets in `hsplat/data`.
+
+Place pretrained Gaussian checkpoints in `hsplat/models` (example path:
+`hsplat/models/blender_default/lego/10000/ckpts/ckpt_29999.pt`).
+Pre-optimized checkpoints are available [here](https://drive.google.com/drive/folders/1zLCgHprvcwg1pDRiqiARcrXwHu4tWhAW?usp=drive_link).
+
+### 5) Quick run
+Run from `hsplat/hsplat`:
+```bash
+cd hsplat
+bash scripts/main_gws_light.sh
+```
 
 ## Overview
 The code is organized as follows:
