@@ -10,7 +10,7 @@ An open-source library for computer-generated holography using primitives.
 >
 > **Fork maintainer**: [Jinwoo Lee](cinescope-wkr.github.io) (cinescope@kaist.ac.kr)
 
-Changes in this fork:
+**Changes in this fork**:
 - `pycolmap` parser compatibility update for recent API versions
   (`SceneManager` import path replaced with `Reconstruction`-based loading).
 - `gsplat.spherical_harmonics` mask-shape compatibility fix in 2DGS loading
