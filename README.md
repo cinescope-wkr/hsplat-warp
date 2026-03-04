@@ -15,7 +15,7 @@ Changes in this fork:
 - `Getting Started` updates for this fork
   (`requirements.txt` workflow and recommended version combination).
 
-## Associated paper
+## Associated Paper
 #### Gaussian wave splatting for computer-generated holography | SIGGRAPH 2025
 <img src="gws-teaser.png" width="100%">
 
