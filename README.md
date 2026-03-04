@@ -2,12 +2,13 @@
 
 An open-source library for computer-generated holography using primitives.
 
-Quick links: [Project Page](https://bchao1.github.io/gaussian-wave-splatting/) | [Paper](https://dl.acm.org/doi/10.1145/3731163) | [Technical Documentation](DOCUMENTATION.md)
+[Project Page](https://bchao1.github.io/gaussian-wave-splatting/) | [Paper](https://dl.acm.org/doi/10.1145/3731163) | [Technical Documentation](DOCUMENTATION.md)
 
 ## Fork Notice
-This repository is a fork of the original `hsplat` project. Implementation-level technical documentation for the `hsplat` repository structure is provided in [DOCUMENTATION.md](DOCUMENTATION.md).
-
-Fork maintainer: [Jinwoo Lee](cinescope-wkr.github.io)
+> [!NOTE]
+> This repository is a fork of the original `hsplat` project. Implementation-level documentation for the `hsplat` repository structure is provided in [DOCUMENTATION.md](DOCUMENTATION.md).
+>
+> **Fork maintainer**: [Jinwoo Lee](cinescope-wkr.github.io) (cinescope@kaist.ac.kr)
 
 Changes in this fork:
 - `pycolmap` parser compatibility update for recent API versions
