@@ -5,7 +5,7 @@ An open-source library for computer-generated holography using primitives.
 ## Fork Notice
 This repository is a fork of the original `hsplat` project.
 
-Fork maintainer: Jinwoo Lee (cinescope@kaist.ac.kr)
+Fork maintainer: [Jinwoo Lee](cinescope-wkr.github.io)
 
 Changes in this fork:
 - `pycolmap` parser compatibility update for recent API versions
