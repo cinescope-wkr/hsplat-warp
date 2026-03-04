@@ -386,7 +386,7 @@ These scripts are thin CLI wrappers around `main.py` and set argument presets by
 ---
 
 <a id="execution-flow"></a>
-## 12) Execution flow summary (recommended mental model)
+## 12) Execution flow summary
 
 For a Gaussian AWB run:
 1. Parse config from CLI.
