@@ -1,8 +1,8 @@
 # Technical Documentation: `hsplat` + `dsplat`
 
-This companion document summarizes the structure, API surface, and execution semantics of the `hsplat-main` codebase from an implementation perspective.
+This companion document describes the structure, APIs, and execution flow of the `hsplat-main` codebase. It is intended as an implementation-facing guide for contributors and fork maintainers.
 
-## Quick Navigation
+## Quick Navigation (Table of Contents)
 - [1) Scope](#scope)
 - [2) Repository map](#repository-map)
 - [3) Top-level entry points and control flow](#entry-points)
@@ -18,6 +18,12 @@ This companion document summarizes the structure, API surface, and execution sem
 - [13) Known caveats / maintenance notes](#caveats)
 - [14) Connection to the paper](#paper-connection)
 
+## How to use this document
+- If you want to run experiments quickly, start at [3) Top-level entry points and control flow](#entry-points), [11) Scripted experiment entry points](#scripts), and [12) Execution flow summary](#execution-flow).
+- If you want to modify scene ingest or primitive conversion, start at [4.2 Data ingestion](#data-ingestion) and [8) Viz utilities](#viz-utilities).
+- If you want to modify rendering math or propagation, start at [5) Algorithms and rendering math](#algorithms) and [6) Wave propagation](#wave-propagation).
+- If you want to inspect acceleration/runtime behavior, start at [9) Native / CUDA path](#native-cuda) and [13) Known caveats](#caveats).
+
 <a id="scope"></a>
 ## 1) Scope
 This document covers:
@@ -28,17 +34,19 @@ This document covers:
 
 <a id="repository-map"></a>
 ## 2) Repository map
-- `hsplat-main/README.md`: top-level setup, [paper references](https://dl.acm.org/doi/10.1145/3731163), and run commands
-- `hsplat-main/hsplat/README.md`: package-level overview and usage notes
-- `hsplat-main/hsplat/main.py`: primary execution pipeline
-- `hsplat-main/hsplat/load_data.py`: dataset/model ingestion and primitive construction
-- `hsplat-main/hsplat/primitives.py`: primitive data model and operations
-- `hsplat-main/hsplat/algorithms.py`: CGH algorithm implementations
-- `hsplat-main/hsplat/propagations.py`: propagation operators
-- `hsplat-main/hsplat/utils.py`: numerical and geometry helper utilities
-- `hsplat-main/hsplat/viz_utils/{parser.py,visualization.py,normalize.py,__init__.py}`: scene parsing and camera path utilities
-- `hsplat-main/hsplat/cuda/{_backend.py,_wrapper.py,csrc/*}`: native extension loading and kernels
-- `hsplat-main/dsplat/main_dpac_encoding.py`: phase encoding and LUT workflow
+| Path | Role |
+| --- | --- |
+| `hsplat-main/README.md` | Top-level setup, [paper reference](https://dl.acm.org/doi/10.1145/3731163), and run commands |
+| `hsplat-main/hsplat/README.md` | Package-level overview and usage notes |
+| `hsplat-main/hsplat/main.py` | Primary execution pipeline |
+| `hsplat-main/hsplat/load_data.py` | Dataset/model ingest and primitive construction |
+| `hsplat-main/hsplat/primitives.py` | Primitive data model and operators |
+| `hsplat-main/hsplat/algorithms.py` | CGH algorithm implementations |
+| `hsplat-main/hsplat/propagations.py` | Propagation operators |
+| `hsplat-main/hsplat/utils.py` | Numerical and geometry helper utilities |
+| `hsplat-main/hsplat/viz_utils/{parser.py,visualization.py,normalize.py,__init__.py}` | Scene parsing and camera-path utilities |
+| `hsplat-main/hsplat/cuda/{_backend.py,_wrapper.py,csrc/*}` | Native extension loading and CUDA kernels |
+| `hsplat-main/dsplat/main_dpac_encoding.py` | Phase encoding and LUT workflow |
 
 ---
 
@@ -114,6 +122,7 @@ These helpers enable dynamic construction by string name and are generic utiliti
   - point-batch representation
   - methods: `sort` via inherited, `cull_elements`, `remap_depth_range`, `set_zero_phase`, `transform_perspective`, `flip_z`, `zero_z`, `sample_points`, and property `z`
 
+<a id="data-ingestion"></a>
 ## 4.2 Data ingestion (`load_data.py`)
 
 ### Dispatch and common helpers
@@ -365,10 +374,12 @@ Note: trajectory helpers are implemented in `visualization.py` and imported into
 
 <a id="scripts"></a>
 ## 11) Scripted experiment entry points (`hsplat/scripts/*.sh`)
-- `main_gws.sh`: Gaussian wave-splatting full match experiments for NeRF and Mip-NeRF scenes
-- `main_gws_light.sh`: same family with explicit number-of-gaussian variant and output paths
-- `main_meshes.sh`: polygon CGH over textured meshes
-- `main_pc.sh`: point-cloud CGH from mesh-derived sampling
+| Script | Purpose |
+| --- | --- |
+| `main_gws.sh` | Gaussian wave-splatting full-match experiments for NeRF and Mip-NeRF scenes |
+| `main_gws_light.sh` | Lighter GWS run with explicit number-of-gaussians variant and output paths |
+| `main_meshes.sh` | Polygon CGH over textured meshes |
+| `main_pc.sh` | Point-cloud CGH from mesh-derived sampling |
 
 These scripts are thin CLI wrappers around `main.py` and set argument presets by scene and target asset.
 
