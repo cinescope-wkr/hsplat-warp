@@ -2,8 +2,10 @@
 
 An open-source library for computer-generated holography using primitives.
 
+Quick links: [Technical Documentation](DOCUMENTATION.md) | [Paper](https://dl.acm.org/doi/10.1145/3731163)
+
 ## Fork Notice
-This repository is a fork of the original `hsplat` project.
+This repository is a fork of the original `hsplat` project. Implementation-level documentation for the `hsplat` repository structure is provided in [DOCUMENTATION.md](DOCUMENTATION.md).
 
 Fork maintainer: [Jinwoo Lee](cinescope-wkr.github.io)
 
