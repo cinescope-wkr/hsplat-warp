@@ -397,7 +397,7 @@ For a Gaussian AWB run:
 - The parser/visualization utilities are split over `normalize.py` and `visualization.py` with overlapping names; avoid importing both with `*` or renaming ambiguously.
 
 <a id="paper-connection"></a>
-## 14) Connection to the [paper](https://dl.acm.org/doi/10.1145/3731163))
+## 14) Connection to the [paper](https://dl.acm.org/doi/10.1145/3731163)
 
 The implementation follows the pipeline described in the paper as a staged mapping from scene representation to wavefront synthesis:
 
