@@ -41,6 +41,7 @@ GWS.ipynb
 # Project outputs
 hsplat/results/
 gsplat/results/
+site/
 
 # data & checkpoints
 data/

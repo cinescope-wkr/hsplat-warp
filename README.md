@@ -1,18 +1,19 @@
 # hsplat-warp
 
-`hsplat-warp` is this fork’s maintained identity: a Warp-extended fork of `hsplat`
-for computer-generated holography research.
+`hsplat-warp` is a [NVIDIA Warp](https://github.com/NVIDIA/warp)-extended fork of `hsplat` for primitive-based
+computer-generated holography research.
 
 The codebase still keeps the package/module path `hsplat` on disk for compatibility,
 but this fork should be understood and referenced as `hsplat-warp` in documentation.
 
-[Project Page](https://bchao1.github.io/gaussian-wave-splatting/) | [Paper](https://dl.acm.org/doi/10.1145/3731163) | [Technical Documentation](DOCUMENTATION.md)
+[Project Page](https://bchao1.github.io/gaussian-wave-splatting/) | [Paper](https://dl.acm.org/doi/10.1145/3731163) | [Docs](https://cinescope-wkr.github.io/hsplat/)
+
+<img src="gws-teaser.png" width="100%">
 
 ## Fork Notice
 > [!NOTE]
 > This repository is the `hsplat-warp` fork of the original `hsplat` project.
-> Implementation-level documentation for the forked `hsplat` repository structure is
-> provided in [DOCUMENTATION.md](DOCUMENTATION.md).
+> The main structured documentation lives at [cinescope-wkr.github.io/hsplat](https://cinescope-wkr.github.io/hsplat/).
 >
 > **Fork maintainer**: [Jinwoo Lee](cinescope-wkr.github.io) (cinescope@kaist.ac.kr)
 
@@ -28,7 +29,7 @@ but this fork should be understood and referenced as `hsplat-warp` in documentat
   (radii from `[C, N, 2]` collapsed to boolean visibility mask `[C, N]`).
 - `Getting Started` updates for this fork
   (`requirements.txt` workflow and recommended version combination).
-- Optional NVIDIA Warp backend added for the Gaussian `naive_fast` kernel path.
+- Optional [NVIDIA Warp](https://github.com/NVIDIA/warp) backend added for the Gaussian `naive_fast` kernel path.
   Motivation: make kernel iteration safer and easier for future researchers while
   preserving the original CUDA-extension path as the default-compatible option.
 
@@ -39,9 +40,6 @@ but this fork should be understood and referenced as `hsplat-warp` in documentat
 
 ## Associated Paper
 #### Gaussian wave splatting for computer-generated holography | SIGGRAPH 2025
-<img src="gws-teaser.png" width="100%">
-
-[Project Page](https://bchao1.github.io/gaussian-wave-splatting/) | [Paper](https://dl.acm.org/doi/10.1145/3731163)
 
 [Suyeon Choi*](https://choisuyeon.github.io/), [Brian Chao*](https://bchao1.github.io/), Jacqueline Yang, [Manu Gopakumar](https://manugopa.github.io/), [Gordon Wetzstein](https://web.stanford.edu/~gordonwz/)  
 *denotes equal contribution
@@ -60,6 +58,12 @@ Use Python 3.10+ and install dependencies required by `hsplat-warp`:
 pip install -r requirements.txt
 ```
 
+Optional documentation tooling:
+```bash
+pip install -r requirements-docs.txt
+mkdocs serve
+```
+
 Recommended version combination:
 - `Python 3.10`
 - `torch 2.9.1` (CUDA 12.8 build)
@@ -76,7 +80,7 @@ Pinned versions in `requirements.txt` reflect a known working environment.
 - `gsplat` (for 2DGS loading and rendering)
 
 Optional accelerated backend:
-- `warp-lang` for the Warp Gaussian kernel backend
+- `warp-lang` for the [NVIDIA Warp](https://github.com/NVIDIA/warp) Gaussian kernel backend
 - install with `pip install -r requirements-warp.txt`
 - this backend is optional; the existing CUDA extension remains supported
 
@@ -96,13 +100,13 @@ bash scripts/main_gws_light.sh
 ```
 
 ### Optional: NVIDIA Warp backend for the Gaussian fast path
-`hsplat-warp` supports an optional NVIDIA Warp backend for `method=naive_fast`.
+`hsplat-warp` supports an optional [NVIDIA Warp](https://github.com/NVIDIA/warp) backend for `method=naive_fast`.
 
 Why this exists:
 - Improve maintainability by moving custom-kernel development closer to Python.
 - Improve research extensibility by making the Gaussian fast kernel easier to modify,
   prototype, and compare against the legacy CUDA extension.
-- Keep the integration low-risk by limiting Warp to the custom Gaussian accumulation
+- Keep the integration low-risk by limiting [Warp](https://github.com/NVIDIA/warp) to the custom Gaussian accumulation
   kernel instead of rewriting the whole pipeline.
 
 Why it matters:
@@ -129,28 +133,30 @@ python main.py --method naive_fast --gaussian-backend warp
 ```
 
 Notes:
-- Warp is only used for the custom Gaussian accumulation kernel.
+- [Warp](https://github.com/NVIDIA/warp) is only used for the custom Gaussian accumulation kernel.
 - FFT propagation and most orchestration stay in PyTorch.
 - `gsplat` is still used in data-loading paths where applicable.
 - If `WARP_CACHE_DIR` is not set, the backend uses a writable temp cache directory by default.
-- Warp installation and driver requirements follow the official NVIDIA Warp docs:
-  https://nvidia.github.io/warp/user_guide/installation.html
+- [Warp](https://github.com/NVIDIA/warp) installation and driver requirements follow the [official installation guide](https://nvidia.github.io/warp/user_guide/installation.html).
 
-## Overview
-The code is organized as follows:
+## Documentation
+
+- `README.md`: concise repository overview and quick start
+- `docs/`: MkDocs-based structured documentation for `hsplat-warp`
+- hosted docs: [cinescope-wkr.github.io/hsplat](https://cinescope-wkr.github.io/hsplat/)
+
+## Repository Layout
+
+The repository is organized as follows:
 - The `dsplat` folder contains the phase encoding function (e.g., DPAC) for the SLMs, from the complex-valued wavefront output of `hsplat-warp`.
-- The ```gsplat``` folder contains the [gsplat](https://github.com/nerfstudio-project/gsplat) library.
+- The `gsplat` folder contains the [gsplat](https://github.com/nerfstudio-project/gsplat) library.
 - The `hsplat` folder contains the core implementation used by `hsplat-warp`.
 
-## Running the Code
+## Additional Run Scripts
 
-To run our Gaussian Wave Splatting algorithm, run:
-``` 
-bash scripts/main_gws_light.sh
-```
+The main quick-start command is shown above in Getting Started. Additional experiment scripts include:
 
-To run CGH algorithms for other primitives, run 
-``` 
+```bash
 bash scripts/main_pc.sh  # point cloud
 bash scripts/main_meshes.sh  # polygon-based CGH
 bash scripts/main_gws.sh  # GWS matcinhg number of primitives
@@ -175,4 +181,6 @@ If you find our work useful in your research, please cite:
 
 ## Contact
 
-If you have any questions, please feel free to email [Suyeon Choi](https://choisuyeon.github.io/) and [Brian Chao](https://bchao1.github.io/).
+For `hsplat-warp` issues, documentation, and fork-specific backend questions, please contact [Jinwoo Lee](cinescope-wkr.github.io).
+
+For questions about the original paper and the upstream `hsplat` method, please refer to the original authors, including [Suyeon Choi](https://choisuyeon.github.io/) and [Brian Chao](https://bchao1.github.io/).

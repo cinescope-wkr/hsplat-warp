@@ -1,0 +1,24 @@
+site_name: hsplat-warp
+site_description: Warp-extended primitive-based computer-generated holography research library
+site_url: https://cinescope-wkr.github.io/hsplat/
+repo_url: https://github.com/cinescope-wkr/hsplat
+repo_name: cinescope-wkr/hsplat
+docs_dir: docs
+theme:
+  name: mkdocs
+nav:
+  - Home: index.md
+  - Getting Started: getting-started.md
+  - Architecture:
+      - Overview: architecture/index.md
+      - Pipeline: architecture/pipeline.md
+      - Native and Warp Backends: architecture/backends.md
+  - Research Guide:
+      - Why hsplat-warp: research/why-hsplat-warp.md
+      - Experiments and Scripts: research/experiments.md
+  - Legacy Single-File Doc: legacy-documentation.md
+markdown_extensions:
+  - toc:
+      permalink: true
+  - admonition
+  - tables

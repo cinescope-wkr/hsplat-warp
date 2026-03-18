@@ -4,6 +4,10 @@ This companion document describes the structure, APIs, and execution flow of the
 `hsplat-warp` codebase. It is intended as an implementation-facing guide for
 contributors and fork maintainers.
 
+This file is preserved as the legacy single-file technical reference.
+For the new structured documentation flow, see the MkDocs site content under `docs/`
+and the top-level `mkdocs.yml`.
+
 Naming note:
 - public fork identity: `hsplat-warp`
 - current package/directory layout: `hsplat/` and `dsplat/`
@@ -54,7 +58,7 @@ This document covers:
 | `hsplat-warp/hsplat/utils.py` | Numerical and geometry helper utilities |
 | `hsplat-warp/hsplat/viz_utils/{parser.py,visualization.py,normalize.py,__init__.py}` | Scene parsing and camera-path utilities |
 | `hsplat-warp/hsplat/cuda/{_backend.py,_wrapper.py,csrc/*}` | Native extension loading and CUDA kernels |
-| `hsplat-warp/hsplat/warp_backend.py` | Optional NVIDIA Warp backend for Gaussian fast accumulation |
+| `hsplat-warp/hsplat/warp_backend.py` | Optional [NVIDIA Warp](https://github.com/NVIDIA/warp) backend for Gaussian fast accumulation |
 | `hsplat-warp/dsplat/main_dpac_encoding.py` | Phase encoding and LUT workflow |
 
 ---
@@ -201,7 +205,7 @@ These helpers enable dynamic construction by string name and are generic utiliti
 - `cgh_from_primitive(primitive, cfg, prev_wavefront=None, frequency_grid=None)`
 - `cgh_from_primitives_fast(primitives, cfg, prev_wavefront=None)`
 - accelerated backend resolution:
-  - `gaussian_backend="auto"` prefers the existing CUDA extension, then Warp, then falls back to `naive_slow`
+  - `gaussian_backend="auto"` prefers the existing CUDA extension, then [Warp](https://github.com/NVIDIA/warp), then falls back to `naive_slow`
   - `gaussian_backend="cuda_ext"` requires the native extension
   - `gaussian_backend="warp"` requires `warp-lang`
 
@@ -329,7 +333,7 @@ Note: trajectory helpers are implemented in `visualization.py` and imported into
 
 The Gaussian fast path now has two implementation options:
 - the existing PyTorch C++/CUDA extension in `hsplat/cuda/*`
-- an optional Warp implementation in `hsplat/warp_backend.py`
+- an optional [Warp](https://github.com/NVIDIA/warp) implementation in `hsplat/warp_backend.py`
 
 This is intentionally a narrow integration. Only the fused Gaussian accumulation step changes backend; FFT propagation, scene orchestration, and most tensor math remain in PyTorch.
 
@@ -364,15 +368,15 @@ This is intentionally a narrow integration. Only the fused Gaussian accumulation
 - `csrc/CUDA version` currently includes helper header `utils.cuh` but file is empty (0 lines)
 
 ### Warp backend (`hsplat/warp_backend.py`)
-- ports the same Gaussian accumulation stage to a Warp kernel
-- uses Warp/PyTorch tensor interop so upstream/downstream Torch code does not need to move
+- ports the same Gaussian accumulation stage to a [Warp](https://github.com/NVIDIA/warp) kernel
+- uses [Warp](https://github.com/NVIDIA/warp)/PyTorch tensor interop so upstream/downstream Torch code does not need to move
 - is designed as an optional backend for researchers who want easier kernel iteration without editing C++/CUDA extension code
-- defaults Warp's kernel cache to a writable temp directory when `WARP_CACHE_DIR` is unset
+- defaults [Warp](https://github.com/NVIDIA/warp)'s kernel cache to a writable temp directory when `WARP_CACHE_DIR` is unset
 
 ### Recommended usage
 - keep `gaussian_backend="auto"` for the safest default behavior
-- use `gaussian_backend="warp"` when intentionally developing or experimenting with the Warp kernel
-- keep in mind that some loading paths still depend on `gsplat`, so Warp does not replace the entire GPU stack
+- use `gaussian_backend="warp"` when intentionally developing or experimenting with the [Warp](https://github.com/NVIDIA/warp) kernel
+- keep in mind that some loading paths still depend on `gsplat`, so [Warp](https://github.com/NVIDIA/warp) does not replace the entire GPU stack
 
 ---
 
