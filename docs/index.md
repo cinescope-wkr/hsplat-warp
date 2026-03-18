@@ -17,6 +17,13 @@ This documentation site is the new front door for the fork. The repository still
 - Kernel developers: go to [Native and Warp Backends](architecture/backends.md)
 - Researchers comparing fork direction: go to [Why hsplat-warp](research/why-hsplat-warp.md)
 
+## Implementation guides
+
+- End-to-end runtime flow: [Execution Flow](architecture/execution-flow.md)
+- Method differences: [Algorithms](architecture/algorithms.md)
+- Batched Gaussian kernel path: [Gaussian Fast Path](architecture/gaussian-fast-path.md)
+- Angular spectrum propagation details: [Propagation](architecture/propagation.md)
+
 ## Documentation structure
 
 - `README.md` remains the concise repository landing page.

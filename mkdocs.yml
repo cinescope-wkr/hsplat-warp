@@ -19,7 +19,11 @@ nav:
   - Getting Started: getting-started.md
   - Architecture:
       - Overview: architecture/index.md
+      - Execution Flow: architecture/execution-flow.md
       - Pipeline: architecture/pipeline.md
+      - Algorithms: architecture/algorithms.md
+      - Gaussian Fast Path: architecture/gaussian-fast-path.md
+      - Propagation: architecture/propagation.md
       - Native and Warp Backends: architecture/backends.md
   - Research:
       - Why hsplat-warp: research/why-hsplat-warp.md

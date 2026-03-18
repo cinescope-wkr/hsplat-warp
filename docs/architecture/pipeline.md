@@ -43,3 +43,10 @@ The project also depends on `gsplat` CUDA wrappers in some loading paths, so the
 - occlusion-aware modes such as silhouette and alpha-wave-blending
 
 `hsplat/propagations.py` contains the angular spectrum propagation operators used after wavefront formation.
+
+To understand the actual runtime flow in more detail, continue to:
+
+- [Execution Flow](execution-flow.md)
+- [Algorithms](algorithms.md)
+- [Gaussian Fast Path](gaussian-fast-path.md)
+- [Propagation](propagation.md)

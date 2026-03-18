@@ -28,3 +28,10 @@
 5. optional focal sweep and result saving
 
 For the most relevant execution details, continue to [Pipeline](pipeline.md).
+
+For implementation-level walkthroughs, also see:
+
+- [Execution Flow](execution-flow.md)
+- [Algorithms](algorithms.md)
+- [Gaussian Fast Path](gaussian-fast-path.md)
+- [Propagation](propagation.md)
