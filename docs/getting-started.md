@@ -23,16 +23,10 @@ Recommended version combination:
 - `pytorch3d 0.7.9`
 - `gsplat 1.5.3`
 
-Optional documentation dependency:
+Optional extra tooling:
 
 ```bash
-pip install -r requirements-docs.txt
-```
-
-Optional Warp backend dependency:
-
-```bash
-pip install -r requirements-warp.txt
+pip install -r requirements-extra.txt
 ```
 
 ## Quick run
@@ -48,12 +42,12 @@ bash scripts/main_gws_light.sh
 
 - Pipeline overview: [Architecture / Pipeline](architecture/pipeline.md)
 - Acceleration details: [Architecture / Native and Warp Backends](architecture/backends.md)
-- Experiment wrappers: [Research Guide / Experiments and Scripts](research/experiments.md)
+- Experiment wrappers: [Research / Experiments and Scripts](research/experiments.md)
 
 ## Building the docs locally
 
 ```bash
-pip install -r requirements-docs.txt
+pip install -r requirements-extra.txt
 mkdocs serve
 ```
 

@@ -21,7 +21,7 @@ nav:
       - Overview: architecture/index.md
       - Pipeline: architecture/pipeline.md
       - Native and Warp Backends: architecture/backends.md
-  - Research Guide:
+  - Research:
       - Why hsplat-warp: research/why-hsplat-warp.md
       - Experiments and Scripts: research/experiments.md
 plugins:

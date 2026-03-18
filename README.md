@@ -1,14 +1,20 @@
 # hsplat-warp
 
+[Project Page](https://bchao1.github.io/gaussian-wave-splatting/) | [Paper](https://dl.acm.org/doi/10.1145/3731163) | [Docs](https://cinescope-wkr.github.io/hsplat-warp/)
+
 `hsplat-warp` is a [NVIDIA Warp](https://github.com/NVIDIA/warp)-extended fork of `hsplat` for primitive-based
 computer-generated holography research.
 
 The codebase still keeps the package/module path `hsplat` on disk for compatibility,
 but this fork should be understood and referenced as `hsplat-warp` in documentation.
 
-[Project Page](https://bchao1.github.io/gaussian-wave-splatting/) | [Paper](https://dl.acm.org/doi/10.1145/3731163) | [Docs](https://cinescope-wkr.github.io/hsplat-warp/)
+<p align="center">
+  <img src="gws-teaser.png" width="100%">
+</p>
 
-<img src="gws-teaser.png" width="100%">
+<p align="center">
+  Primitive-based scene content is converted into a holographic wavefront through Gaussian Wave Splatting, then propagated and encoded for computer-generated holography rendering.
+</p>
 
 ## Quick Navigation
 
@@ -38,9 +44,7 @@ but this fork should be understood and referenced as `hsplat-warp` in documentat
   (radii from `[C, N, 2]` collapsed to boolean visibility mask `[C, N]`).
 - `Getting Started` updates for this fork
   (`requirements.txt` workflow and recommended version combination).
-- [NVIDIA Warp](https://github.com/NVIDIA/warp) backend added for the Gaussian `naive_fast` kernel path.
-  Motivation: make kernel iteration safer and easier for future researchers while
-  preserving the original CUDA-extension path as the default-compatible option.
+- [NVIDIA Warp](https://github.com/NVIDIA/warp) backend added for the Gaussian `naive_fast` kernel path, making kernel iteration safer and easier for future researchers while preserving the original CUDA-extension path as the default-compatible option.
 
 **Naming note**
 - Project/fork name: `hsplat-warp`
@@ -67,9 +71,9 @@ Use Python 3.10+ and install dependencies required by `hsplat-warp`:
 pip install -r requirements.txt
 ```
 
-Optional documentation tooling:
+Optional extra tooling:
 ```bash
-pip install -r requirements-docs.txt
+pip install -r requirements-extra.txt
 mkdocs serve
 ```
 
@@ -90,7 +94,7 @@ Pinned versions in `requirements.txt` reflect a known working environment.
 
 Optional accelerated backend:
 - `warp-lang` for the [NVIDIA Warp](https://github.com/NVIDIA/warp) Gaussian kernel backend
-- install with `pip install -r requirements-warp.txt`
+- install with `pip install -r requirements-extra.txt`
 - this backend is optional; the existing CUDA extension remains supported
 
 ### 3) Data and checkpoints
