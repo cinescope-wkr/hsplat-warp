@@ -27,9 +27,40 @@ import utils
 from load_data import generate_target_grid
 from primitives import Point, Polygon, Gaussian, Points, Polygons, Gaussians
 from propagations import ASM_parallel
-from cuda._wrapper import cgh_gaussians_naive
+from cuda._wrapper import (
+    cgh_gaussians_naive as cgh_gaussians_naive_cuda,
+    cuda_extension_available,
+    cuda_extension_unavailable_reason,
+)
+from warp_backend import (
+    cgh_gaussians_naive as cgh_gaussians_naive_warp,
+    warp_available,
+    warp_unavailable_reason,
+)
 
 logger = logging.getLogger(__name__)
+
+
+def _resolve_gaussian_backend(cfg):
+    backend = getattr(cfg, "gaussian_backend", "auto")
+    if backend == "auto":
+        if cuda_extension_available():
+            return "cuda_ext"
+        if warp_available():
+            return "warp"
+        return "fallback"
+
+    if backend == "cuda_ext":
+        if cuda_extension_available():
+            return backend
+        raise RuntimeError(cuda_extension_unavailable_reason())
+
+    if backend == "warp":
+        if warp_available():
+            return backend
+        raise RuntimeError(warp_unavailable_reason())
+
+    raise ValueError(f"Unsupported gaussian backend: {backend}")
 
 def get_cgh_method(cfg):
     """Return the selected CGH method based on the configuration."""
@@ -190,7 +221,16 @@ def naive_cgh_from_primitives_fast(primitives, cfg):
     """
     Generate a mid-plane hologram using fast CUDA kernel implementation.
     """
-    logger.info("Using naive fast CGH method")
+    backend = _resolve_gaussian_backend(cfg)
+    if backend == "fallback":
+        logger.warning(
+            "No accelerated Gaussian backend is available; falling back to the "
+            "naive_slow implementation. Install Warp or build the CUDA extension "
+            "to restore fast execution."
+        )
+        return naive_cgh_from_primitives(primitives, cfg)
+
+    logger.info("Using naive fast CGH method with backend=%s", backend)
     wavefront = torch.zeros(
         1, 1, *cfg.resolution_hologram, dtype=torch.complex64, device=cfg.dev)
 
@@ -490,8 +530,13 @@ def fully_analytic_cgh_gaussians_fast(
     local_AS_shift = torch.sum(uc * torch.bmm(R_T, c.unsqueeze(-1)).squeeze(-1), dim=-1)
     du = torch.bmm(R, uc.unsqueeze(-1)).squeeze(-1) / cfg.wavelength
 
-    # CUDA kernel for summing up all Gaussians in a single pass in Fourier domain:
-    G_real, G_imag = cgh_gaussians_naive(
+    backend = _resolve_gaussian_backend(cfg)
+    kernel_fn = (
+        cgh_gaussians_naive_cuda
+        if backend == "cuda_ext"
+        else cgh_gaussians_naive_warp
+    )
+    G_real, G_imag = kernel_fn(
         fx.contiguous(),
         fy.contiguous(),
         fz.contiguous(),

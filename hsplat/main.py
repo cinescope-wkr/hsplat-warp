@@ -82,6 +82,7 @@ class Config:
         "naive_slow", "naive_fast",
         "silhouette", "alpha-wave-blending", "alpha_wave_blending",
     ] = "naive_slow"
+    gaussian_backend: Literal["auto", "cuda_ext", "warp"] = "auto"
     batch_size: int = None
 
     scene_dir: Optional[str] = None
@@ -259,7 +260,8 @@ def main(cfg: Config):
     logger.info("Loaded primitives. Starting CGH algorithm...")
     start_t = time.time()
     wavefront = get_cgh_method(cfg)(target_primitives, cfg)
-    torch.cuda.synchronize()
+    if cfg.dev.type == "cuda" and torch.cuda.is_available():
+        torch.cuda.synchronize()
     elapsed_time = time.time() - start_t
     info = {"elapsed_time": elapsed_time}
     logger.info(f"Elapsed time: {elapsed_time:.2f} sec")
@@ -315,7 +317,8 @@ if __name__ == "__main__":
                                           name=f"z0_c_{channel}",
                                           out_folder=frame_folder)
 
-                torch.cuda.empty_cache()
+                if cfg.dev.type == "cuda" and torch.cuda.is_available():
+                    torch.cuda.empty_cache()
                 amps = []
                 prop_dists = np.concatenate([
                     np.linspace(cfg.z_min, cfg.z_max, cfg.num_focal_slices),

@@ -1,14 +1,25 @@
-# hsplat
+# hsplat-warp
 
-An open-source library for computer-generated holography using primitives.
+`hsplat-warp` is this fork’s maintained identity: a Warp-extended fork of `hsplat`
+for computer-generated holography research.
+
+The codebase still keeps the package/module path `hsplat` on disk for compatibility,
+but this fork should be understood and referenced as `hsplat-warp` in documentation.
 
 [Project Page](https://bchao1.github.io/gaussian-wave-splatting/) | [Paper](https://dl.acm.org/doi/10.1145/3731163) | [Technical Documentation](DOCUMENTATION.md)
 
 ## Fork Notice
 > [!NOTE]
-> This repository is a fork of the original `hsplat` project. Implementation-level documentation for the `hsplat` repository structure is provided in [DOCUMENTATION.md](DOCUMENTATION.md).
+> This repository is the `hsplat-warp` fork of the original `hsplat` project.
+> Implementation-level documentation for the forked `hsplat` repository structure is
+> provided in [DOCUMENTATION.md](DOCUMENTATION.md).
 >
 > **Fork maintainer**: [Jinwoo Lee](cinescope-wkr.github.io) (cinescope@kaist.ac.kr)
+
+`hsplat-warp` emphasizes:
+- safer optional acceleration paths
+- better long-term maintainability for custom kernels
+- stronger extensibility for future researchers building on the fast Gaussian path
 
 **Changes in this fork**:
 - `pycolmap` parser compatibility update for recent API versions
@@ -17,6 +28,14 @@ An open-source library for computer-generated holography using primitives.
   (radii from `[C, N, 2]` collapsed to boolean visibility mask `[C, N]`).
 - `Getting Started` updates for this fork
   (`requirements.txt` workflow and recommended version combination).
+- Optional NVIDIA Warp backend added for the Gaussian `naive_fast` kernel path.
+  Motivation: make kernel iteration safer and easier for future researchers while
+  preserving the original CUDA-extension path as the default-compatible option.
+
+**Naming note**
+- Project/fork name: `hsplat-warp`
+- Current package/directory name: `hsplat`
+- Reason: preserve compatibility with the upstream layout, imports, scripts, and paths
 
 ## Associated Paper
 #### Gaussian wave splatting for computer-generated holography | SIGGRAPH 2025
@@ -36,7 +55,7 @@ git submodule update --init --recursive
 ```
 
 ### 2) Environment
-Use Python 3.10+ and install dependencies required by `hsplat`:
+Use Python 3.10+ and install dependencies required by `hsplat-warp`:
 ```bash
 pip install -r requirements.txt
 ```
@@ -56,6 +75,11 @@ Pinned versions in `requirements.txt` reflect a known working environment.
 - `pycolmap` (for COLMAP parser)
 - `gsplat` (for 2DGS loading and rendering)
 
+Optional accelerated backend:
+- `warp-lang` for the Warp Gaussian kernel backend
+- install with `pip install -r requirements-warp.txt`
+- this backend is optional; the existing CUDA extension remains supported
+
 ### 3) Data and checkpoints
 Download [Mip-NeRF 360](http://storage.googleapis.com/gresearch/refraw360/360_v2.zip) and
 [NeRF synthetic](https://drive.google.com/drive/folders/1cK3UDIJqKAAm7zyrxRYVFJ0BRMgrwhh4), then place datasets in `hsplat/data`.
@@ -65,17 +89,58 @@ Place pretrained Gaussian checkpoints in `hsplat/models` (example path:
 Pre-optimized checkpoints are available [here](https://drive.google.com/drive/folders/1zLCgHprvcwg1pDRiqiARcrXwHu4tWhAW?usp=drive_link).
 
 ### 4) Quick run
-Run from `hsplat/hsplat`:
+Run from the repo’s `hsplat/` package directory:
 ```bash
 cd hsplat
 bash scripts/main_gws_light.sh
 ```
 
+### Optional: NVIDIA Warp backend for the Gaussian fast path
+`hsplat-warp` supports an optional NVIDIA Warp backend for `method=naive_fast`.
+
+Why this exists:
+- Improve maintainability by moving custom-kernel development closer to Python.
+- Improve research extensibility by making the Gaussian fast kernel easier to modify,
+  prototype, and compare against the legacy CUDA extension.
+- Keep the integration low-risk by limiting Warp to the custom Gaussian accumulation
+  kernel instead of rewriting the whole pipeline.
+
+Why it matters:
+- It gives future contributors a clearer path to extend the fast Gaussian renderer.
+- It reduces coupling between research iteration and handwritten PyTorch C++/CUDA bindings.
+- It preserves backward compatibility because the existing CUDA extension still works
+  and remains the first choice in `gaussian_backend=auto` when available.
+
+Why this is part of the fork identity:
+- It is the clearest architectural distinction between upstream `hsplat` and `hsplat-warp`.
+- It signals that this fork is aimed at maintainable research iteration, not only one-off reproduction.
+- It gives collaborators an obvious place to add future kernel experiments without replacing the full pipeline.
+
+- Default: `gaussian_backend=auto`
+- Explicit backends: `gaussian_backend=cuda_ext` or `gaussian_backend=warp`
+- Safety behavior:
+  if `auto` is selected and neither accelerated backend is available, `naive_fast`
+  falls back to `naive_slow` with a warning instead of crashing.
+
+Example:
+```bash
+cd hsplat
+python main.py --method naive_fast --gaussian-backend warp
+```
+
+Notes:
+- Warp is only used for the custom Gaussian accumulation kernel.
+- FFT propagation and most orchestration stay in PyTorch.
+- `gsplat` is still used in data-loading paths where applicable.
+- If `WARP_CACHE_DIR` is not set, the backend uses a writable temp cache directory by default.
+- Warp installation and driver requirements follow the official NVIDIA Warp docs:
+  https://nvidia.github.io/warp/user_guide/installation.html
+
 ## Overview
 The code is organized as follows:
-- The ```dsplat``` folder contains the phase encoding function (e.g., DPAC) for the SLMs, from the complex-valued wavefront output of ```hsplat```.
+- The `dsplat` folder contains the phase encoding function (e.g., DPAC) for the SLMs, from the complex-valued wavefront output of `hsplat-warp`.
 - The ```gsplat``` folder contains the [gsplat](https://github.com/nerfstudio-project/gsplat) library.
-- The ```hsplat``` folder contains CGH algorithm implementations using primitives.
+- The `hsplat` folder contains the core implementation used by `hsplat-warp`.
 
 ## Running the Code
 
