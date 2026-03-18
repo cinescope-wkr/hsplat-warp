@@ -6,14 +6,23 @@ computer-generated holography research.
 The codebase still keeps the package/module path `hsplat` on disk for compatibility,
 but this fork should be understood and referenced as `hsplat-warp` in documentation.
 
-[Project Page](https://bchao1.github.io/gaussian-wave-splatting/) | [Paper](https://dl.acm.org/doi/10.1145/3731163) | [Docs](https://cinescope-wkr.github.io/hsplat/)
+[Project Page](https://bchao1.github.io/gaussian-wave-splatting/) | [Paper](https://dl.acm.org/doi/10.1145/3731163) | [Docs](https://cinescope-wkr.github.io/hsplat-warp/)
 
 <img src="gws-teaser.png" width="100%">
+
+## Quick Navigation
+
+- [Getting Started](#getting-started)
+- [Documentation](#documentation)
+- [Repository Layout](#repository-layout)
+- [NVIDIA Warp Backend](#nvidia-warp-backend)
+- [Citation](#citation)
+- [Contact](#contact)
 
 ## Fork Notice
 > [!NOTE]
 > This repository is the `hsplat-warp` fork of the original `hsplat` project.
-> The main structured documentation lives at [cinescope-wkr.github.io/hsplat](https://cinescope-wkr.github.io/hsplat/).
+> The main structured documentation lives at [cinescope-wkr.github.io/hsplat-warp](https://cinescope-wkr.github.io/hsplat-warp/).
 >
 > **Fork maintainer**: [Jinwoo Lee](cinescope-wkr.github.io) (cinescope@kaist.ac.kr)
 
@@ -29,7 +38,7 @@ but this fork should be understood and referenced as `hsplat-warp` in documentat
   (radii from `[C, N, 2]` collapsed to boolean visibility mask `[C, N]`).
 - `Getting Started` updates for this fork
   (`requirements.txt` workflow and recommended version combination).
-- Optional [NVIDIA Warp](https://github.com/NVIDIA/warp) backend added for the Gaussian `naive_fast` kernel path.
+- [NVIDIA Warp](https://github.com/NVIDIA/warp) backend added for the Gaussian `naive_fast` kernel path.
   Motivation: make kernel iteration safer and easier for future researchers while
   preserving the original CUDA-extension path as the default-compatible option.
 
@@ -99,8 +108,31 @@ cd hsplat
 bash scripts/main_gws_light.sh
 ```
 
-### Optional: NVIDIA Warp backend for the Gaussian fast path
-`hsplat-warp` supports an optional [NVIDIA Warp](https://github.com/NVIDIA/warp) backend for `method=naive_fast`.
+## Documentation
+
+- `README.md`: concise repository overview and quick start
+- `docs/`: MkDocs-based structured documentation for `hsplat-warp`
+- hosted docs: [cinescope-wkr.github.io/hsplat-warp](https://cinescope-wkr.github.io/hsplat-warp/)
+
+## Repository Layout
+
+The repository is organized as follows:
+- The `dsplat` folder contains the phase encoding function (e.g., DPAC) for the SLMs, from the complex-valued wavefront output of `hsplat-warp`.
+- The `gsplat` folder contains the [gsplat](https://github.com/nerfstudio-project/gsplat) library.
+- The `hsplat` folder contains the core implementation used by `hsplat-warp`.
+
+## Additional Run Scripts
+
+The main quick-start command is shown above in Getting Started. Additional experiment scripts include:
+
+```bash
+bash scripts/main_pc.sh  # point cloud
+bash scripts/main_meshes.sh  # polygon-based CGH
+bash scripts/main_gws.sh  # GWS matcinhg number of primitives
+```
+
+## NVIDIA Warp Backend
+`hsplat-warp` supports an [NVIDIA Warp](https://github.com/NVIDIA/warp) backend for `method=naive_fast`.
 
 Why this exists:
 - Improve maintainability by moving custom-kernel development closer to Python.
@@ -138,29 +170,6 @@ Notes:
 - `gsplat` is still used in data-loading paths where applicable.
 - If `WARP_CACHE_DIR` is not set, the backend uses a writable temp cache directory by default.
 - [Warp](https://github.com/NVIDIA/warp) installation and driver requirements follow the [official installation guide](https://nvidia.github.io/warp/user_guide/installation.html).
-
-## Documentation
-
-- `README.md`: concise repository overview and quick start
-- `docs/`: MkDocs-based structured documentation for `hsplat-warp`
-- hosted docs: [cinescope-wkr.github.io/hsplat](https://cinescope-wkr.github.io/hsplat/)
-
-## Repository Layout
-
-The repository is organized as follows:
-- The `dsplat` folder contains the phase encoding function (e.g., DPAC) for the SLMs, from the complex-valued wavefront output of `hsplat-warp`.
-- The `gsplat` folder contains the [gsplat](https://github.com/nerfstudio-project/gsplat) library.
-- The `hsplat` folder contains the core implementation used by `hsplat-warp`.
-
-## Additional Run Scripts
-
-The main quick-start command is shown above in Getting Started. Additional experiment scripts include:
-
-```bash
-bash scripts/main_pc.sh  # point cloud
-bash scripts/main_meshes.sh  # polygon-based CGH
-bash scripts/main_gws.sh  # GWS matcinhg number of primitives
-```
 
 ## Citation
 

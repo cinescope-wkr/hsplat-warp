@@ -7,7 +7,6 @@
 | Path | Role |
 | --- | --- |
 | `README.md` | Top-level setup, fork identity, and quick usage |
-| `DOCUMENTATION.md` | Legacy single-file technical reference |
 | `hsplat/main.py` | Primary CGH execution pipeline |
 | `hsplat/load_data.py` | Dataset/model ingest and primitive construction |
 | `hsplat/primitives.py` | Primitive data model and operators |

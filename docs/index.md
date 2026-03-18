@@ -21,4 +21,3 @@ This documentation site is the new front door for the fork. The repository still
 
 - `README.md` remains the concise repository landing page.
 - This MkDocs site is the main structured documentation entry point.
-- `DOCUMENTATION.md` is preserved as a legacy single-file companion reference.
